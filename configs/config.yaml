@@ -1,0 +1,57 @@
+input:
+  path: "data/demand_forecasting.csv"
+
+
+models:
+  LinearRegression:
+    type: "LinearRegression"
+    params:
+      fit_intercept: [True]
+      n_jobs: [-1]
+
+  Ridge:
+    type: "Ridge"
+    params: 
+      alpha: [0.01, 0.1, 1.0, 10, 100]
+      fit_intercept: [True]
+      max_iter: [100, 500, 1000]
+
+  Lasso:
+    type: "Lasso"
+    params:
+      alpha: [0.01, 0.1, 1.0, 10, 100]
+      fit_intercept: [True]
+      max_iter: [100, 500, 1000]
+
+  ElasticNet:
+    type: "ElasticNet"
+    params:
+      alpha: [0.01, 0.1, 1.0, 10, 100]
+      l1_ratio: [0.3, 0.5, 0.7, 0.9]
+      fit_intercept: [True]
+      max_iter: [100, 500, 1000]
+
+  XGBRegressor:
+    type: "XGBRegressor"
+    params:
+      n_estimators: [300, 500]
+      max_depth: [4, 8]
+      min_child_weight: [10, 20]
+      subsample: [0.8, 0.9, 1.0]
+      colsample_bytree: [0.7, 0.8]
+
+
+training:
+  test_size: 0.2
+  cv: 20
+  verbose: 3
+  scoring: "neg_mean_absolute_error"
+
+
+output:
+  train_feature_path: artifacts/features/train.csv
+  test_feature_path: artifacts/features/test.csv
+  preprocessor_path: artifacts/preprocessor/preprocessor.pkl
+  model_path: models/best_model.pkl
+  metrics_path: artifacts/metrics/metrics.json
+  explainability_path: artifacts/explainability/shap_summary.png
